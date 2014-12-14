@@ -25,7 +25,7 @@ uint32 readHexNumber(char *str, int numOfDigits){
 }
 
 uint32 verifyAndRead(char *line, HexInfo *hexinfo){
-  int i;
+  int i= 0;
   int ptr = 9;
   
   if(line[0] != ':')
@@ -46,13 +46,37 @@ uint32 verifyAndRead(char *line, HexInfo *hexinfo){
   else 
     hexinfo->type = readHexNumber(&line[7], 2);
   
-  while(ptr > (hexinfo->length)){
+  while(i < (hexinfo->length)){
+    
     hexinfo->data[i] = readHexNumber(&line[ptr], 2);
-    i = i + 2;
-    ptr = ptr+2;
+    i++;
+    ptr = ptr + 2;
+    
+  }
+  hexinfo->checkSum = 0x01 + ~((hexinfo->length) + sumData(hexinfo) + (hexinfo->type) + sumAddress(hexinfo));
+  printf("%x", hexinfo->checkSum);
+}
+
+uint32 sumData(HexInfo *hexinfo){
+  int i = 0;
+  uint32 sum = 0;
+  
+  while(i < hexinfo->length){
+    sum = hexinfo->data[i] + sum;
+    i++;
   }
   
+  return sum;
+
+}
+
+uint32 sumAddress(HexInfo *hexinfo){
+  uint32 sum; 
   
+  sum = ((hexinfo->address) >> 8) & 0x00ff;
+  sum = sum + ((hexinfo->address) & 0x00ff);
+  
+  return sum;
 }
 
 void assertHexNumber(char *str, int numOfDigits){

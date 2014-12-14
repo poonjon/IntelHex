@@ -118,18 +118,57 @@ void test_readHexNumber_should_read_6a8c55b_return_8c(){
 void test_verifyAndRead_should_read_10204E0029D00229D6022A14(){
   HexInfo hexinfo;
     CEXCEPTION_T e;
-  char str[] = ":10204E0029D00229D6022A1402287D02284302270B"; 
+  char str[] = ":10001300AC12AD13AE10AF1112002F8E0E8F0F2244"; 
   Try{
     verifyAndRead(str, &hexinfo);
     TEST_ASSERT_EQUAL(0x10,hexinfo.length);
     TEST_ASSERT_EQUAL(0x00,hexinfo.type);
-    TEST_ASSERT_EQUAL(0x204e,hexinfo.address);
+    TEST_ASSERT_EQUAL(0x0013,hexinfo.address);
+    TEST_ASSERT_EQUAL(0x44,hexinfo.checkSum);
     
   }Catch(e){
     TEST_ASSERT_EQUAL(8, e);
   }
 }
- 
+
+ void test_verifyAndRead_should_read_1015620159a52314(){
+  HexInfo hexinfo;
+    CEXCEPTION_T e;
+
+  char str[] = ":0315620159a52314"; 
+  Try{
+    verifyAndRead(str, &hexinfo);
+    TEST_ASSERT_EQUAL(0x03,hexinfo.length);
+    TEST_ASSERT_EQUAL(0x01,hexinfo.type);
+    TEST_ASSERT_EQUAL(0x1562,hexinfo.address);
+    
+  }Catch(e){
+    TEST_ASSERT_EQUAL(8, e);
+  }
+}
+
+void test_sumData_should_return_16(){
+  int sum; 
+  HexInfo hexinfo = {.length = 4};
+  hexinfo.data[0] = 2;
+  hexinfo.data[1] = 5;
+  hexinfo.data[2] = 6;
+  hexinfo.data[3] = 3;
+  sum = sumData(&hexinfo);
+  
+  TEST_ASSERT_EQUAL(0x10, sum);
+  
+}
+
+void test_sumAddress_should_return_16(){
+  int sum; 
+  HexInfo hexinfo = {.address = 0x0808};
+
+  sum = sumAddress(&hexinfo);
+  
+  TEST_ASSERT_EQUAL(16, sum);
+  
+}
  //:10204E0029D00229D6022A1402287D02284302270B
  // ^ ^   ^ ^                               ^
  // | |   | |                               |

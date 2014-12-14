@@ -12,6 +12,8 @@ typedef struct{
   uint32 value;
 }HexInfo;
 
+uint32 sumData(HexInfo *hexinfo);
+uint32 sumAddress(HexInfo *hexinfo);
 uint32 verifyAndRead(char *line, HexInfo *hexinfo);
 void catchError();
 uint32 readHexNumber(char *str, int numOfDigits);
