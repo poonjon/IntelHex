@@ -53,8 +53,13 @@ uint32 verifyAndRead(char *line, HexInfo *hexinfo){
     ptr = ptr + 2;
     
   }
-  hexinfo->checkSum = 0x01 + ~((hexinfo->length) + sumData(hexinfo) + (hexinfo->type) + sumAddress(hexinfo));
-  printf("%x", hexinfo->checkSum);
+  
+  hexinfo->checkSum = 0x01 + (~((hexinfo->length) + sumData(hexinfo) + (hexinfo->type) + sumAddress(hexinfo))& 0x00ff);
+  
+  if(hexinfo->checkSum != readHexNumber(&line[(((hexinfo->length)*2)+9)], 2)){
+    catchError();
+  }
+  
 }
 
 uint32 sumData(HexInfo *hexinfo){

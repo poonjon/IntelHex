@@ -115,7 +115,7 @@ void test_readHexNumber_should_read_6a8c55b_return_8c(){
   }
 }
 
-void test_verifyAndRead_should_read_10204E0029D00229D6022A14(){
+void test_verifyAndRead_should_read_10001300AC12AD13AE10AF1112002F8E0E8F0F2244(){
   HexInfo hexinfo;
     CEXCEPTION_T e;
   char str[] = ":10001300AC12AD13AE10AF1112002F8E0E8F0F2244"; 
@@ -131,16 +131,17 @@ void test_verifyAndRead_should_read_10204E0029D00229D6022A14(){
   }
 }
 
- void test_verifyAndRead_should_read_1015620159a52314(){
+ void test_verifyAndRead_should_read_020000021200EA(){
   HexInfo hexinfo;
     CEXCEPTION_T e;
 
-  char str[] = ":0315620159a52314"; 
+  char str[] = ":020000021200EA"; 
   Try{
     verifyAndRead(str, &hexinfo);
-    TEST_ASSERT_EQUAL(0x03,hexinfo.length);
-    TEST_ASSERT_EQUAL(0x01,hexinfo.type);
-    TEST_ASSERT_EQUAL(0x1562,hexinfo.address);
+    TEST_ASSERT_EQUAL(0x2,hexinfo.length);
+    TEST_ASSERT_EQUAL(0x2,hexinfo.type);
+    TEST_ASSERT_EQUAL(0x0,hexinfo.address);
+    TEST_ASSERT_EQUAL(0xea,hexinfo.checkSum);
     
   }Catch(e){
     TEST_ASSERT_EQUAL(8, e);
