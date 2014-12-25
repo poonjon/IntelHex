@@ -19,7 +19,7 @@ uint32 readHexNumber(char *str, int numOfDigits){
       sscanf(str, "%04x", &value);
   }
   else
-    catchError();
+    catchError(ERR_NOT_DIGIT);
     
   return value;
 }
@@ -28,21 +28,25 @@ uint32 verifyAndRead(char *line, HexInfo *hexinfo){
   int i= 0;
   int ptr = 9;
   
+  //check colon
   if(line[0] != ':')
-    catchError();
+    catchError(ERR_NOT_COLON);
   
+  //check length
   if(readHexNumber(&line[1], 2) > 0x10)
-    catchError();
+    catchError(ERR_WRONG_LENGTH);
   else
     hexinfo->length = readHexNumber(&line[1], 2);
   
+  //check address
   if(readHexNumber(&line[3], 4) > 0x7530)
-    catchError();
+    catchError(ERR_WRONG_ADDRESS);
   else 
     hexinfo->address = readHexNumber(&line[3], 4);
   
+  //check type
   if(readHexNumber(&line[7], 2) > 0x04)
-    catchError();
+    catchError(ERR_WRONG_TYPE);
   else 
     hexinfo->type = readHexNumber(&line[7], 2);
   
@@ -56,8 +60,9 @@ uint32 verifyAndRead(char *line, HexInfo *hexinfo){
   
   hexinfo->checkSum = 0x01 + (~((hexinfo->length) + sumData(hexinfo) + (hexinfo->type) + sumAddress(hexinfo))& 0x00ff);
   
+  //check checksum
   if(hexinfo->checkSum != readHexNumber(&line[(((hexinfo->length)*2)+9)], 2)){
-    catchError();
+    catchError(ERR_WRONG_CHECKSUM);
   }
   
 }
@@ -98,6 +103,32 @@ void assertHexNumber(char *str, int numOfDigits){
   }
 }
 
-void catchError(){
-  printf("INCORRECT DATA");
+void catchError(int error){
+  switch(error){
+    case ERR_NOT_DIGIT:
+      printf("ERROR NOT DIGIT");
+      break;
+    case ERR_NOT_COLON:
+      printf("ERROR NOT COLON");
+      break;
+    case ERR_WRONG_LENGTH:
+      printf("ERROR WRONG LENGTH");
+      break;
+    case ERR_WRONG_ADDRESS:
+      printf("ERROR WRONG ADDRESS");
+      break;
+    case ERR_WRONG_TYPE:
+      printf("ERROR WRONG TYPE");
+      break;
+    case ERR_WRONG_CHECKSUM:
+      printf("ERROR WRONG CHECKSUM");
+      break; 
+  
+  }
 }
+
+
+
+
+
+
