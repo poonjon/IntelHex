@@ -7,18 +7,6 @@
 
 void setUp(void){}
 void tearDown(void){}
-void test_explore_sscanf(){
- char sentence []="Rudolph is years 12 old";
-  char name [20];
-  char year [20];
-  char old [20];
-  int i;
-  int value;
-  
-  value = sscanf (&sentence[0],"%2s %s %s ",name, year, old );
-  printf ("%s %s %s \n",name, year, old );
-  printf("%d", value);
-}
 
 void test_assertHexNumber_read_8a_should_not_throw(){
   char data[20] = ":1230148ab";

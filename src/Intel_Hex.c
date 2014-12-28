@@ -4,6 +4,12 @@
 #include "ErrorCode.h"
 #include "CException.h"
 
+/*
+** input : string, number of digits in string
+** output: return value of data
+**
+** read the hex number and return data if no error
+*/
 uint32 readHexNumber(char *str, int numOfDigits){
   int i;
   char buffer[16];
@@ -24,6 +30,12 @@ uint32 readHexNumber(char *str, int numOfDigits){
   return value;
 }
 
+/*
+** input : string, hexinfo struct
+**
+** get a string of data and facilitate hexinfo struct with information from the string
+**
+*/
 uint32 verifyAndRead(char *line, HexInfo *hexinfo){
   int i= 0;
   int ptr = 9;
